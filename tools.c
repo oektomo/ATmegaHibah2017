@@ -9,7 +9,9 @@
 #include <math.h>
 #include <stdlib.h>
 #include "tools.h"
+#ifdef USE_LCD
 #include "lcd.h"
+#endif
 
 // reverses a string 'str' of length 'len'
 void reverse(char *str, int len)
@@ -122,7 +124,11 @@ int match(buffer_typedef* Buffer, pheripheral_typedef* Pheripheral)
 	// package example Sxxx&xxxE
 	if(Buffer->n > 8) {
 		if(check_buffer(Buffer) != 'S') {
+#ifdef USE_LCD
 			lcdwritechar( read_buffer(Buffer) );	// waste if we don't get Header
+#else
+			read_buffer(Buffer);
+#endif
 		} else {
 			char idNumChar[4], idStateChar[4];
 			read_buffer(Buffer);	// ditch "S" header
@@ -154,4 +160,76 @@ void pheripheralInit(pheripheral_typedef* Pheripheral)
 		Pheripheral[i].id = i;
 		Pheripheral[i].state = PHERIPHERAL_OFF;
 	}
+}
+
+void pheripheralSwitch(pheripheral_typedef* Pheripheral, int PheripID)
+{
+	if (Pheripheral[PheripID].state == 1) {
+		switch (PheripID) {
+		case 1:
+			PORT_PH1 |= PIN_PH1;
+			break;
+		case 2:
+			PORT_PH2 |= PIN_PH2;
+			break;
+		case 3:
+			PORT_PH3 |= PIN_PH3;
+			break;
+		case 4:
+			PORT_PH4 |= PIN_PH4;
+			break;
+		case 5:
+			PORT_PH5 |= PIN_PH5;
+			break;
+		case 6:
+			PORT_PH6 |= PIN_PH6;
+			break;
+		case 7:
+			PORT_PH7 |= PIN_PH7;
+			break;
+		case 8:
+			PORT_PH8 |= PIN_PH8;
+			break;
+		case 9:
+			PORT_PH9 |= PIN_PH9;
+			break;
+		case 10:
+			PORT_PH10 |= PIN_PH10;
+			break;
+		}
+	} else {
+		switch (PheripID) {
+		case 1:
+			PORT_PH1 &= ~PIN_PH1;
+			break;
+		case 2:
+			PORT_PH2 &= ~PIN_PH2;
+			break;
+		case 3:
+			PORT_PH3 &= ~PIN_PH3;
+			break;
+		case 4:
+			PORT_PH4 &= ~PIN_PH4;
+			break;
+		case 5:
+			PORT_PH5 &= ~PIN_PH5;
+			break;
+		case 6:
+			PORT_PH6 &= ~PIN_PH6;
+			break;
+		case 7:
+			PORT_PH7 &= ~PIN_PH7;
+			break;
+		case 8:
+			PORT_PH8 &= ~PIN_PH8;
+			break;
+		case 9:
+			PORT_PH9 &= ~PIN_PH9;
+			break;
+		case 10:
+			PORT_PH10 &= ~PIN_PH10;
+			break;
+		}
+	}
+
 }

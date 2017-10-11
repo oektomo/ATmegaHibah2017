@@ -8,12 +8,12 @@
 
 void lcdwrite(uint8_t data, uint8_t send_data)
 {
-	PORTB &= ~(1 << LCDREAD);
-	PORTD &= ~(1 << LCDRS);
-	PORTD |= send_data << LCDRS;
-	PORTD |= 1 << LCDENABLE;
+	LCDREAD_PORT &= ~(1 << LCDREAD);
+	LCDRS_PORT &= ~(1 << LCDRS);
+	LCDRS_PORT |= send_data << LCDRS;
+	LCDENABLE_PORT |= 1 << LCDENABLE;
 	PORTD &= 0xF;
-	PORTD |= data << 4;
+	LCDDATA_PORT |= data << 4;
 	_delay_ms(2);
 	PORTD &= ~(1 << LCDENABLE);
 }

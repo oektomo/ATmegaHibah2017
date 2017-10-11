@@ -9,7 +9,9 @@
 #include <avr/interrupt.h>
 #include <util/delay.h>
 #include <stdlib.h>
+#ifdef USE_LCD
 #include "lcd.h"
+#endif
 #include "adc.h"
 #include "uart.h"
 #include "tools.h"
@@ -32,12 +34,12 @@ int main()
 	DDRD = 0xFF;
 
 	PORTC = 0xFF;
+#ifdef USE_LCD
 	lcdinit();
-
 	lcdwritestring("Good Job Today");
 	lcdgotoxy(2, 2);
-	lcdwritestring("Hungry");
-
+	lcdwritestring("Step2");
+#endif
 	UART_Init();
 	init_buffer(&ringBuff1);
 	pheripheralInit(Pheripheral1);
@@ -64,18 +66,22 @@ int main()
 			//status |= WRITE_BUFF;
 
 			write_buffer(oldBuffer, &ringBuff1);
+#ifdef USE_LCD
 			lcdgotoxy(2, 2);
 			itoa(ringBuff1.n, buffer, 10);
 			lcdwritestring(buffer);
+#endif
 		}
 		tempInt = match(&ringBuff1, Pheripheral1);
 
 		if( (tempInt > 0) && (tempInt <= PHERIPHERAL_AMOUNT) ) {
+			pheripheralSwitch(Pheripheral1, tempInt);
 			itoa(tempInt, buffer, 10);
+#ifdef USE_LCD
 			lcdgotoxy(2, 1);
 			lcdwritestring("Pherip no: ");
 			lcdwritestring(buffer);
-
+#endif
 			for (int i = 0; i<PHERIPHERAL_AMOUNT; i++) {
 				itoa(Pheripheral1[i].id, buffer, 10);
 				UARTWriteString(buffer);
