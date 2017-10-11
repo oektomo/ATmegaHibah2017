@@ -135,11 +135,13 @@ int match(buffer_typedef* Buffer, pheripheral_typedef* Pheripheral)
 			for (int i = 0; i < 3; i++) {
 				idNumChar[i] = read_buffer(Buffer); // copy value id consist 3 char
 			}
+			idNumChar[3] = '\0';
 			int idNumInt = atoi(idNumChar);
 			read_buffer(Buffer);	// ditch "&" separator
 			for (int i = 0; i < 3; i++) {
 				idStateChar[i] = read_buffer(Buffer); // copy state consist 3 char
 			}
+			idStateChar[3] = '\0';
 			int idStateInt = atoi(idStateChar);
 			read_buffer(Buffer);	// ditch "E" tail
 

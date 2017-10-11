@@ -32,6 +32,7 @@ int main()
 	uint16_t adcBuff = 12;
 	DDRB = 0xFF;
 	DDRD = 0xFF;
+	DDRC = 0xFF;
 
 	PORTC = 0xFF;
 #ifdef USE_LCD
@@ -45,7 +46,7 @@ int main()
 	pheripheralInit(Pheripheral1);
 
 	_delay_ms(1000);
-	UARTWriteString("seems good, done eating\n\r");
+	UARTWriteString("seems good,\n\r");
 	UART_IT_Init();
 	sei();
 
@@ -92,7 +93,6 @@ int main()
 				UARTWriteString("\n\r");
 			}
 		}
-
 
 	}
 	lcdclear();

@@ -19,25 +19,25 @@
 #define PHERIPHERAL_AMOUNT 15
 
 #define PORT_PH1 PORTC
-#define PIN_PH1 (1 << PIN0)
+#define PIN_PH1 (1 << PIN5)
 #define PORT_PH2 PORTC
-#define PIN_PH2 (1 << PIN1)
+#define PIN_PH2 (1 << PIN4)
 #define PORT_PH3 PORTC
 #define PIN_PH3 (1 << PIN2)
 #define PORT_PH4 PORTC
-#define PIN_PH4 (1 << PIN4)
+#define PIN_PH4 (1 << PIN1)
 #define PORT_PH5 PORTC
-#define PIN_PH5 (1 << PIN5)
+#define PIN_PH5 (1 << PIN0)
 #define PORT_PH6 PORTB
-#define PIN_PH6 (1 << PIN1)
+#define PIN_PH6 (1 << PIN5)
 #define PORT_PH7 PORTB
-#define PIN_PH7 (1 << PIN2)
+#define PIN_PH7 (1 << PIN4)
 #define PORT_PH8 PORTB
 #define PIN_PH8 (1 << PIN3)
 #define PORT_PH9 PORTB
-#define PIN_PH9 (1 << PIN4)
+#define PIN_PH9 (1 << PIN2)
 #define PORT_PH10 PORTB
-#define PIN_PH10 (1 << PIN5)
+#define PIN_PH10 (1 << PIN1)
 
 void ftoa(float n, char *res, int afterpoint);
 
