@@ -9,6 +9,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include "tools.h"
+#include "uart.h"
 #ifdef USE_LCD
 #include "lcd.h"
 #endif
@@ -119,6 +120,11 @@ void init_buffer(buffer_typedef* Buffer)
 
 int match(buffer_typedef* Buffer, pheripheral_typedef* Pheripheral)
 {
+#ifdef UART_DEBUG
+	//UART_Tx(" ");
+	UARTWriteInt(Buffer->n);
+	UARTWriteString("\n\r");
+#endif
 	int retVal = -1;
 	// read if received data already hit one frame
 	// package example Sxxx&xxxE
@@ -164,74 +170,93 @@ void pheripheralInit(pheripheral_typedef* Pheripheral)
 	}
 }
 
+void printPheripheralState(pheripheral_typedef* Pheripheral)
+{
+	char charBuff[8];
+	for (int i = 0; i<PHERIPHERAL_AMOUNT; i++) {
+		itoa(Pheripheral[i].id, charBuff, 10);
+		UARTWriteString(charBuff);
+		UARTWriteString(" ");
+
+		itoa(Pheripheral[i].state, charBuff, 10);
+		UARTWriteString(charBuff);
+		UARTWriteString("\n\r");
+	}
+}
+
 void pheripheralSwitch(pheripheral_typedef* Pheripheral, int PheripID)
 {
-	if (Pheripheral[PheripID].state == 1) {
-		switch (PheripID) {
-		case 1:
-			PORT_PH1 |= PIN_PH1;
-			break;
-		case 2:
-			PORT_PH2 |= PIN_PH2;
-			break;
-		case 3:
-			PORT_PH3 |= PIN_PH3;
-			break;
-		case 4:
-			PORT_PH4 |= PIN_PH4;
-			break;
-		case 5:
-			PORT_PH5 |= PIN_PH5;
-			break;
-		case 6:
-			PORT_PH6 |= PIN_PH6;
-			break;
-		case 7:
-			PORT_PH7 |= PIN_PH7;
-			break;
-		case 8:
-			PORT_PH8 |= PIN_PH8;
-			break;
-		case 9:
-			PORT_PH9 |= PIN_PH9;
-			break;
-		case 10:
-			PORT_PH10 |= PIN_PH10;
-			break;
+	if( (PheripID > 0) && (PheripID <= PHERIPHERAL_AMOUNT) ) {
+		if (Pheripheral[PheripID].state == 1) {
+			switch (PheripID) {
+			case 1:
+				PORT_PH1 |= PIN_PH1;
+				break;
+			case 2:
+				PORT_PH2 |= PIN_PH2;
+				break;
+			case 3:
+				PORT_PH3 |= PIN_PH3;
+				break;
+			case 4:
+				PORT_PH4 |= PIN_PH4;
+				break;
+			case 5:
+				PORT_PH5 |= PIN_PH5;
+				break;
+			case 6:
+				PORT_PH6 |= PIN_PH6;
+				break;
+			case 7:
+				PORT_PH7 |= PIN_PH7;
+				break;
+			case 8:
+				PORT_PH8 |= PIN_PH8;
+				break;
+			case 9:
+				PORT_PH9 |= PIN_PH9;
+				break;
+			case 10:
+				PORT_PH10 |= PIN_PH10;
+				break;
+			}
+		} else {
+			switch (PheripID) {
+			case 1:
+				PORT_PH1 &= ~PIN_PH1;
+				break;
+			case 2:
+				PORT_PH2 &= ~PIN_PH2;
+				break;
+			case 3:
+				PORT_PH3 &= ~PIN_PH3;
+				break;
+			case 4:
+				PORT_PH4 &= ~PIN_PH4;
+				break;
+			case 5:
+				PORT_PH5 &= ~PIN_PH5;
+				break;
+			case 6:
+				PORT_PH6 &= ~PIN_PH6;
+				break;
+			case 7:
+				PORT_PH7 &= ~PIN_PH7;
+				break;
+			case 8:
+				PORT_PH8 &= ~PIN_PH8;
+				break;
+			case 9:
+				PORT_PH9 &= ~PIN_PH9;
+				break;
+			case 10:
+				PORT_PH10 &= ~PIN_PH10;
+				break;
+			}
 		}
-	} else {
-		switch (PheripID) {
-		case 1:
-			PORT_PH1 &= ~PIN_PH1;
-			break;
-		case 2:
-			PORT_PH2 &= ~PIN_PH2;
-			break;
-		case 3:
-			PORT_PH3 &= ~PIN_PH3;
-			break;
-		case 4:
-			PORT_PH4 &= ~PIN_PH4;
-			break;
-		case 5:
-			PORT_PH5 &= ~PIN_PH5;
-			break;
-		case 6:
-			PORT_PH6 &= ~PIN_PH6;
-			break;
-		case 7:
-			PORT_PH7 &= ~PIN_PH7;
-			break;
-		case 8:
-			PORT_PH8 &= ~PIN_PH8;
-			break;
-		case 9:
-			PORT_PH9 &= ~PIN_PH9;
-			break;
-		case 10:
-			PORT_PH10 &= ~PIN_PH10;
-			break;
-		}
+#ifdef UART_DEBUG
+		printPheripheralState(Pheripheral);
+#endif
 	}
 
 }

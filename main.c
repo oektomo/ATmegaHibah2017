@@ -45,16 +45,16 @@ int main()
 	init_buffer(&ringBuff1);
 	pheripheralInit(Pheripheral1);
 
-	_delay_ms(1000);
+	_delay_ms(100);
 	UARTWriteString("seems good,\n\r");
 	UART_IT_Init();
 	sei();
 
 	uint8_t status = 0, oldBuffer = 0;
-	int tempInt;
+	int tempInt = WRONG_PHERIPHERAL;
 	while(1) {
 
-		// put Received buffer into ring Buffer
+
 		cli();
 		if(oldBuffer != bufferRx) {
 			oldBuffer = bufferRx;
@@ -64,34 +64,18 @@ int main()
 
 		if ( status & NEW_RX ) {
 			status &= ~NEW_RX;
-			//status |= WRITE_BUFF;
 
+			// put Received buffer into ring Buffer
 			write_buffer(oldBuffer, &ringBuff1);
+			tempInt = match(&ringBuff1, Pheripheral1);
+
+			pheripheralSwitch(Pheripheral1, tempInt);
+			tempInt = WRONG_PHERIPHERAL;
 #ifdef USE_LCD
 			lcdgotoxy(2, 2);
 			itoa(ringBuff1.n, buffer, 10);
 			lcdwritestring(buffer);
 #endif
-		}
-		tempInt = match(&ringBuff1, Pheripheral1);
-
-		if( (tempInt > 0) && (tempInt <= PHERIPHERAL_AMOUNT) ) {
-			pheripheralSwitch(Pheripheral1, tempInt);
-			itoa(tempInt, buffer, 10);
-#ifdef USE_LCD
-			lcdgotoxy(2, 1);
-			lcdwritestring("Pherip no: ");
-			lcdwritestring(buffer);
-#endif
-			for (int i = 0; i<PHERIPHERAL_AMOUNT; i++) {
-				itoa(Pheripheral1[i].id, buffer, 10);
-				UARTWriteString(buffer);
-				UARTWriteString(" ");
-
-				itoa(Pheripheral1[i].state, buffer, 10);
-				UARTWriteString(buffer);
-				UARTWriteString("\n\r");
-			}
 		}
 
 	}

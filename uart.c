@@ -6,6 +6,7 @@
  */
 #include "uart.h"
 #include <avr/io.h>
+#include <stdlib.h>
 
 void UART_Init(void)
 {
@@ -34,4 +35,12 @@ void UARTWriteString(const char* string)
 		UART_Tx(string[i]);
 		i++;
 	}
+}
+
+void UARTWriteInt(int8_t int8bit)
+{
+	char temp[3];
+	// extern char *itoa(int __val, char *__s, int __radix);
+	itoa(int8bit, temp, 10);
+	UARTWriteString(temp);
 }

@@ -39,6 +39,8 @@
 #define PORT_PH10 PORTB
 #define PIN_PH10 (1 << PIN1)
 
+#define WRONG_PHERIPHERAL -2
+
 void ftoa(float n, char *res, int afterpoint);
 
 // ring buffer
@@ -60,5 +62,6 @@ uint8_t check_buffer(buffer_typedef* Buffer);
 void init_buffer(buffer_typedef* Buffer);
 int match(buffer_typedef* Buffer, pheripheral_typedef* Pheripheral);
 void pheripheralInit(pheripheral_typedef* Pheripheral);
+void printPheripheralState(pheripheral_typedef* Pheripheral);
 void pheripheralSwitch(pheripheral_typedef* Pheripheral, int PheripID);
 #endif /* TOOLS_H_ */
