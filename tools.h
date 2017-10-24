@@ -14,6 +14,7 @@
 #define RING_BUFFER_SIZE 100
 #define WRITE_BUFF (1 << 2)
 #define NEW_RX	(1 << 1)
+#define NEW_BUFF (1 << 3)
 #define PHERIPHERAL_OFF 0
 #define PHERIPHERAL_ON 1
 #define PHERIPHERAL_AMOUNT 15

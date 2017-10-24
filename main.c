@@ -17,11 +17,12 @@
 #include "tools.h"
 
 volatile uint8_t bufferRx;
-
+volatile uint8_t status = 0;
 ISR(USART_RXC_vect)
 {
 	bufferRx = UDR;
 	UART_Tx(bufferRx);
+	status |= NEW_RX;
 }
 
 int main()
@@ -50,20 +51,21 @@ int main()
 	UART_IT_Init();
 	sei();
 
-	uint8_t status = 0, oldBuffer = 0;
+	uint8_t oldBuffer = 0;
 	int tempInt = WRONG_PHERIPHERAL;
 	while(1) {
 
 
 		cli();
-		if(oldBuffer != bufferRx) {
+		if(status & NEW_RX) {
+			status &= ~NEW_RX;
+			status |= NEW_BUFF;
 			oldBuffer = bufferRx;
-			status |= NEW_RX;
 		}
 		sei();
 
-		if ( status & NEW_RX ) {
-			status &= ~NEW_RX;
+		if ( status & NEW_BUFF ) {
+			status &= ~NEW_BUFF;
 
 			// put Received buffer into ring Buffer
 			write_buffer(oldBuffer, &ringBuff1);
