@@ -120,11 +120,11 @@ void init_buffer(buffer_typedef* Buffer)
 
 int match(buffer_typedef* Buffer, pheripheral_typedef* Pheripheral)
 {
-#ifdef UART_DEBUG
+/*#ifdef UART_DEBUG
 	//UART_Tx(" ");
 	UARTWriteInt(Buffer->n);
 	UARTWriteString("\n\r");
-#endif
+#endif*/
 	int retVal = -1;
 	// read if received data already hit one frame
 	// package example Sxxx&xxxE
@@ -174,19 +174,20 @@ void printPheripheralState(pheripheral_typedef* Pheripheral)
 {
 	char charBuff[8];
 	for (int i = 0; i<PHERIPHERAL_AMOUNT; i++) {
+		UARTWriteString("\n\r");
 		itoa(Pheripheral[i].id, charBuff, 10);
 		UARTWriteString(charBuff);
 		UARTWriteString(" ");
 
 		itoa(Pheripheral[i].state, charBuff, 10);
 		UARTWriteString(charBuff);
-		UARTWriteString("\n\r");
 	}
+	UARTWriteString("\n\r");
 }
 
 void pheripheralSwitch(pheripheral_typedef* Pheripheral, int PheripID)
 {
-	if( (PheripID > 0) && (PheripID <= PHERIPHERAL_AMOUNT) ) {
+	if( (PheripID >= 0) && (PheripID < PHERIPHERAL_AMOUNT) ) {
 		if (Pheripheral[PheripID].state == 1) {
 			switch (PheripID) {
 			case 1:
