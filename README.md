@@ -1,8 +1,9 @@
-
-Create 4 branch
-master 
-initial commit 
- 
+This code is to receive and parse specific string communicate via UART  
+  
+Create 4 branch  
+master  
+initial commit  
+   
 otm
 removing project file such as 
 .cproject
