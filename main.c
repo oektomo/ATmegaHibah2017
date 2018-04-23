@@ -9,6 +9,7 @@
 #include <avr/interrupt.h>
 #include <util/delay.h>
 #include <stdlib.h>
+//#define USE_LCD
 #ifdef USE_LCD
 #include "lcd.h"
 #endif
@@ -41,6 +42,8 @@ int main()
 	lcdwritestring("Good Job Today");
 	lcdgotoxy(2, 2);
 	lcdwritestring("Step2");
+#else
+	PORTB |= (1 << 0);
 #endif
 	UART_Init();
 	init_buffer(&ringBuff1);
@@ -54,7 +57,6 @@ int main()
 	uint8_t oldBuffer = 0;
 	int tempInt = WRONG_PHERIPHERAL;
 	while(1) {
-
 
 		cli();
 		if(status & NEW_RX) {
@@ -81,16 +83,19 @@ int main()
 		}
 
 	}
+#ifdef USE_LCD
 	lcdclear();
-
 	itoa(adcBuff, buffer, 10);
 	lcdwritestring(buffer);
-	//adcinit();
-	//adcstart();
-
+#endif
+#ifdef USE_ADC
+	adcinit();
+	adcstart();
+#endif
+#ifdef USE_LCD
 	lcdgotoxy(1, 2);
 	lcdwritestring("adc: ");
-
+#endif
 	while(1)
 	{
 		PORTD = 0xFF;
